@@ -76,10 +76,10 @@ Day 6 of my 30 day map challenge is to present the distribution of 𝘔𝘪𝘵�
 ### Day7: Navigation
 **Ready to explore Africa**
 
----Flight Information---
+*Flight Information*
 Flight EK367: 23:40---9 hr 55m---05:35
 Flight EK770: 03:50---9 hr 50m---11:40
---------------------------
+
 
 On Day 7 of my 30-day map challenge, I present the route from Taoyuan to Cape Town International Airport for Emirates airline flights EK367 and EK770.
 
