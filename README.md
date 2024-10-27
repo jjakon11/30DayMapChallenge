@@ -1,10 +1,12 @@
 # 30 Day Map Challenge
 ## 2023 Challenge
-The details of the challenge can be found: https://30daymapchallenge.com/. It was raised by Topi Tjukanov.
+The details of the challenge can be found: [here](https://30daymapchallenge.com/). The challenge was set by Topi Tjukanov since 2019.
 
-This is my first year to attend the 30 day map challenge on social media, which post the map that produce everyday in every November.
+This is my first year attending the 30-Day Map Challenge on social media, which posts a map produced every day in November.
 
-Daily topic for 2023 Noveber:
+Daily topic for 2023 in November:
+
+<img src="2023_Challenge/Map/2023_MapChallenge.jpg" width="500"/>
 
 ***
 
