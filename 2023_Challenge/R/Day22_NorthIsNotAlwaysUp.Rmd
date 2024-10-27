@@ -1,0 +1,100 @@
+---
+title: "Day22_NorthIsNotAlwaysUp"
+author: "Chen-Chia Ku"
+date: "2023-11-22"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+library(ggplot2)
+library(dplyr)
+library(sf)
+library(ggnewscale)
+library(ggspatial) #annotation_north_arrow
+library(ggpubr)
+library(sysfonts)
+library(showtext)
+
+```
+
+
+```{r}
+font_add_google(name = 'Berkshire Swash', family = 'Berkshire Swash')
+font_add_google(name = 'Philosopher', family = 'Philosopher')
+showtext_auto()
+
+```
+
+```{r}
+Land_DEM <- raster("D:/Drive/6_Rworld/30daysMapChallenge_2023/MapDt/HYP_LR_SR_OB_DR/HYP_LR_SR_OB_DR.tif")
+
+taiwan_DEM <- raster("D:/Drive/6_Rworld/30daysMapChallenge_2023/MapDt/TaiwanMapDEM/tif file/twdtm_asterV2_30m.tif" )
+
+```
+
+
+```{r}
+x <- aggregate(Land_DEM, fact=10)
+Eledt <- rasterToPoints(x) 
+Eledt2 <- as.data.frame(Eledt) %>%
+  rename(elevation="HYP_LR_SR_OB_DR_1") %>%
+  mutate(x=-x)
+
+land <- aggregate(taiwan_DEM, fact=10)
+Land_Eledt <- rasterToPoints(land)
+Land_Eledt2 <- as.data.frame(Land_Eledt) %>%
+  rename(elevation='Layer_1') %>%
+  filter(x>119.5, y<25.3) %>%
+  mutate(x=-x)
+  
+
+```
+
+
+```{r}
+crs_string = "+proj=omerc +lat_0=20 +lonc=-150 +alpha=0 +k_0=.7 +datum=WGS84 +units=m +no_defs +gamma=90"
+
+st_crs(Eledt2) <- crs_string
+crs_string = +proj=omerc +lat_0=20 +lonc=150 +alpha=0 +k_0=.7 +datum=WGS84 +units=gamma=45
+
+mypal <- colorRampPalette(c("#224e77","#443A83","#287D8E","#3bb0c8","#9ad7e1" ))
+hotspot <-  colorRampPalette(c("#C6E0BE","#2EA858","#0F381D"))
+NN_plot <- ggplot()+
+  
+  geom_tile(data=Eledt2 , mapping=aes(x=y, y=x, fill=elevation), alpha=0.9)+
+  scale_fill_gradientn(colours = mypal(1000))+
+  new_scale("fill") +
+  geom_tile(data=Land_Eledt2 , mapping=aes(x=y, y=x, fill=elevation))+
+  scale_fill_gradientn(colours = hotspot(50))+
+  geom_text(mapping=aes(x=23, y=-147, label="North"), 
+            size=200, color="#97bdda", family='Berkshire Swash')+
+  geom_text(mapping=aes(x=23, y=-154, label="is not always up"), 
+            size=70, color="#97bdda", family='Philosopher')+
+  geom_text(mapping=aes(x=23, y=-162, 
+                       label="#30DayMapChallenge | Day22_North is not always up | @jjakon11"), 
+            size=16,color="#97bdda" ,family="Philosopher")+
+  scale_x_continuous(limits = c(-18, 67))+
+  scale_y_continuous(limits = c(-170, -114))+
+  coord_sf(crs=crs_string)+
+  annotation_north_arrow(location = "tl", which_north = "true",   #North
+                         pad_x = unit(15.5, "cm"), pad_y = unit(8.5, "cm"), 
+                         height = unit(5.0, "cm"), width = unit(5.0, "cm") , 
+                         style = north_arrow_nautical(text_col = '#00b1b1',
+                                                      line_col = '#6D6396', 
+                                                      fill = c("#6D6396", "4E4777")))+
+  theme(panel.background = element_rect(fill = "transparent", color="#234A6D"), 
+        plot.background=element_rect(fill = "#1e405e", color="#234A6D"),
+          panel.grid = element_blank(), 
+          plot.margin = margin(0, -0.5, 0, -0.5, "cm"),
+          axis.text.x = element_text(vjust = 8, size=40, color="#438BC4"),
+          axis.text.y = element_text(angle = 270, vjust = 8, hjust=0.5, size=40, color="#438BC4"),
+          axis.ticks.x = element_blank(),
+          axis.title.x = element_blank(),
+          axis.ticks.y = element_blank(),
+          axis.title.y = element_blank(),
+          legend.position="none")
+  
+
+ggexport(NN_plot, filename = "NNplot.png", width=7000, height=4750, res=500)
+```
