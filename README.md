@@ -131,3 +131,169 @@ On the 13th day of my 30-day map challenge, I plot the distribution of plant spe
   - Gbif data: < https://doi.org/10.15468/dl.fm2gfh >
 
 <img src="2023_Challenge/Map/Day13_Choropleth.gif" width="400"/>
+
+### Day14: Europe
+**European Railway Map**
+
+On the 14th day of my 30-day map challenge, I use the R program to present the railway map of Europe, which boasts the highest railway density in the world.
+
+- Data source:
+  - railway: < http://www.mapcruzin.com/dow....../europe-railways-shape.zip >
+
+<img src="2023_Challenge/Map/Day14_Europe.png" width="400"/>
+
+### Day15: Open Street Map
+**Chiayi, Taiwan**
+
+On the 15th day of my 30-day map challenge, I mapped my hometown, Chiayi, Taiwan, which was a wood production city in the past.
+
+<img src="2023_Challenge/Map/Day15_OpenStreetMap.png" width="400"/>
+
+### Day16: Oceania
+**Oceania**
+
+On the 16th day of my 30-day map challenge, I used the Ocean Bottom map along with the distribution of 308 plant species to illustrate the map of Oceania
+
+- Data source: 
+  - Ocean bottom map : < https://www.naturalearthdata.com/ >
+  - gbif: < https://doi.org/10.15468/dl.n5849k >
+  
+<img src="2023_Challenge/Map/Day16_Oceania.png" width="400"/>
+
+### Day17:Flow
+**Their Origin: Naturalized Flora in Taiwan**
+
+My 17th map in the 30-day map challenge aims to present the original areas of naturalized species in Taiwan. I compiled the naturalized data from Chang-Yang et al. (2022), published in Taiwania, to understand the origins of these species through a visualization map.
+
+- Data source:
+  - Naturalized species: < https://doi.org/10.6165/tai.2022.67.1 >
+
+<img src="2023_Challenge/Map/Day17_Flow.png" width="400"/>
+
+### Day18: Atomosphere
+**Change of the Global Temperature**
+
+On the 18th day of the 30-day map challenge, I mapped global temperature changes from 1990 to 2022. Each data point in every grid represents the temperature difference between the value in a specific year and the mean value of 1990-2020.
+
+- Data source: 
+  - Temperature data < https://www.ncei.noaa.gov/....../ghcn....../data-access >
+  - Temperature data Reference: < https://doi.org/10.1175/JCLI-D-18-0094.1 >
+
+<img src="2023_Challenge/Map/Day18_Atomosphere.gif" width="400"/>
+
+### Day19: 5 Minute Map
+**Copy the code to enhance work efficiency**
+
+On the 19th day of the 30-day map challenge, I spent five minutes plotting the streets around Taipei Station. I copied my previous code, JUST changed the location and color, and still couldn't finish it to be perfect. So, it is conceivable that starting from 0 would take more time than this.
+
+
+<img src="2023_Challenge/Map/Day19_5MinuteMap.png" width="400"/>
+
+### Day20: outdoor
+**Alishan Centennial Railway**
+
+On the 20th day of the 30-day map challenge, I mapped the Alishan Railway in Taiwan, which has been constructed for the wood production business for a hundred years. If you need to hike to the mountain, taking the train to reach the Alishan Forest Trail is the best idea.
+
+- Data source: 
+  - TaiwanDEM: < https://data.gov.tw/dataset/35430 >
+  - Raiway: OpenStreetMap台灣
+  - Information about the railway: < https://en.wikipedia.org/wiki/Alishan_Forest_Railway >
+
+<img src="2023_Challenge/Map/Day20_Outdoor.png" width="400"/>
+
+
+### Day21: Raster
+**Hot citizen science**
+
+On the 21st day of the 30-day map challenge, I mapped the heatmap of vascular records based on human observations from 2010 to 2023. This allows us to understand the relationship between species distribution hotspots and human activity in Taiwan.
+
+- Data source: 
+  - species distribution: < https://doi.org/10.15468/dl.3fs3cv >
+
+<img src="2023_Challenge/Map/Day21_Raster.png" width="400"/>
+
+### Day22: North is not always up
+**North is not always up**
+
+On the 22nd day of the 30-day map challenge, I mapped the rotated Pacific Ocean, starting from the Taiwan island.
+
+- Data source: 
+  - Ocean DEM : < https://www.naturalearthdata.com/ >
+  
+<img src="2023_Challenge/Map/Day22_NorthIsNotAlwaysUp.png" width="400"/>
+
+### Day23: 3D
+**Taiwan, An Islands After Plate Collision**
+
+On the 23rd day of the 30-day map challenge, I mapped a 3D topographic Taiwan map with the Taiwan DEM and Ocean DEM data.
+
+- Data source: 
+  - Ocean DEM : < https://www.naturalearthdata.com/ >
+  - Taiwan DEM: <  https://data.gov.tw/dataset/35430 >  
+
+<img src="2023_Challenge/Map/Day23_3D.mp4" width="400"/>
+
+### Day24: Black and white
+**YiLan City**
+
+On the 24th day of the 30-day map challenge, I mapped a black and white map using OpenStreetMap for Yilan City, Taiwan.
+
+<img src="2023_Challenge/Map/Day24_BlackAndWhite.png" width="400"/>
+
+
+### Day25: Antarctia
+**Antarctia**
+
+On the 25th day of the 30-day map challenge, I mapped an Antarctica map.
+
+<img src="2023_Challenge/Map/Day25_Antarctica.png" width="400"/>
+
+### Day26: Minimal
+**Nauru: the minimal island country in the world**
+
+On the 26th day of the 30-day map challenge, I mapped street lines for the smallest island country in the world, Nauru.
+
+<img src="2023_Challenge/Map/Day26_Minimal.png" width="400"/>
+
+### Day27: Dots
+**Telegraph pole, Connecting and Lighting Up Our Lives**
+
+On the 27th day of the 30-day map challenge, I mapped the distribution of telegraph poles in Taiwan, which are essential facilities for connecting and lighting up our daily lives.
+Those are dots, not lines!!!
+
+- Data source: 
+  - Telegraph pole data: https://data.gov.tw/dataset/33305
+  
+<img src="2023_Challenge/Map/Day27_Dots.png" width="400"/>
+
+### Day28: Is this chart or a map
+**Top 10 cities with the densest telegraph poles**
+
+On the 28th day of the 30-day map challenge, I compiled the data on telegraph pole density and outputted a chart of pole density polygons for each county in Taiwan. 
+
+- Data source: 
+  - Telegraph pole data: https://data.gov.tw/dataset/33305
+
+<img src="2023_Challenge/Map/Day28_IsThisChartOrAMap.mp4" width="400"/>
+
+### Day29: Population
+**3D Population distribution in Taiwan** 
+
+On the 29th day of the 30-day map challenge, I plotted the population distribution using a 3D map to illustrate the distribution of people in Taiwan. 
+
+- Data source: 
+  - Population data:  https://data.gov.tw/dataset/117988 
+
+<img src="2023_Challenge/Map/Day29_Population.png" width="400"/>
+
+
+### Day30: My Favorite
+**Taiwan**
+
+Finally, on the 30th and last day of my map challenge, I created a Joy plot to illustrate the ridge pattern of the entire Taiwan. Simple yet beautiful.
+
+- Data source: 
+  - TaiwanDEM: < https://data.gov.tw/dataset/35430 >
+
+<img src="2023_Challenge/Map/Day30_MyFavorite.png" width="400"/>
+
