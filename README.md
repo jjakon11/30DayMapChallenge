@@ -8,12 +8,13 @@ This is my second year attending the 30-Day Map Challenge on social media, which
 Daily topic for this year, 2024, in November:
 
 <img src="2024_Challenge/Map/2024_November.jpg" width="500"/>
+
 ***
 
 ### Day1: Points
 **Taiwan's Lighthouse**
 Taiwan is a country made up of multiple islands located at the west of the Pacific Ocean. A lighthouse directs people on the ocean, telling them, 'Hey, this is the way home.' 
 
-<img src="2024_Challenge/Map/Day1_points.png" width="400"/>
+<img src="2024_Challenge/Map/Day1_Points.png" width="400"/>
 
 ***
