@@ -6,7 +6,7 @@ This is my first year attending the 30-Day Map Challenge on social media, which 
 
 Daily topic for 2023 in November:
 
-<img src="2023_Challenge/Map/2023_MapChallenge.jpg" width="500"/>
+<img src="Map/2023_MapChallenge.jpg" width="500"/>
 
 ***
 
@@ -27,7 +27,7 @@ Second day challenge of plotting map with R program: Lines. I utilized Taiwan's 
   
   - Ocean DEM: https://www.gebco.net/
 
-<img src="2023_Challenge/Map/Day2_Lines.png" width="400"/>
+<img src="Map/Day2_Lines.png" width="400"/>
   
 ### Day3: Polygons
 **Village Map of Taiwan**
@@ -40,7 +40,7 @@ My third-day challenge: mapping a graph with the R program using Polygons. This 
   - Population data: < https://data.gov.tw/dataset/117988 >
   - Ocean DEM: < https://www.gebco.net/ >
 
-<img src="2023_Challenge/Map/Day3_Polygons.png" width="400"/>
+<img src="Map/Day3_Polygons.png" width="400"/>
 
 ### Day4: A Bad Map
 **Islands**
@@ -53,7 +53,7 @@ A Bad Map day, with no clear indication of its location or the information it co
  - Taiwan Village shape file: < https://data.gov.tw/dataset/17219 >
 
 
-<img src="2023_Challenge/Map/Day4_AbadMap.png" width="400"/>
+<img src="Map/Day4_AbadMap.png" width="400"/>
 
 ### Day5: Anolog Map
 **Humboldt's Naturgemälde**
@@ -62,7 +62,7 @@ Day 5 of my 30-day map challenge, I aim to present the species distribution alon
 
 - More information: https://en.wikipedia.org/wiki/Alexander_von_Humboldt
 
-<img src="2023_Challenge/Map/Day5_AnologMap.jpg" width="400"/>
+<img src="Map/Day5_AnologMap.jpg" width="400"/>
 
 
 ### Day6: Asia
@@ -73,7 +73,7 @@ Day 6 of my 30 day map challenge is to present the distribution of 𝘔𝘪𝘵�
 - Data source: 
   - Species data: < https://www.gbif.org/occurrence/search >
 
-<img src="2023_Challenge/Map/Day6_Asia.png" width="400"/>
+<img src="Map/Day6_Asia.png" width="400"/>
 
 ### Day7: Navigation
 **Ready to explore Africa**
@@ -88,7 +88,7 @@ On Day 7 of my 30-day map challenge, I present the route from Taoyuan to Cape To
 - Data source: 
   - Flight data: < https://zh-tw.flightaware.com/live/airport/OMDB >
 
-<img src="2023_Challenge/Map/Day7_Navigation.jpg" width="400"/>
+<img src="Map/Day7_Navigation.jpg" width="400"/>
 
 ### Day8: Africa
 **Leopard in Africa**
@@ -98,7 +98,7 @@ On Day 8 of my 30-day map challenge, I present Leopard distribution in Africa fr
 - Data source: 
   - Leopard data: < https://doi.org/10.15468/dl.7tbasq >
 
-<img src="2023_Challenge/Map/Day8_Africa.png" width="400"/>
+<img src="Map/Day8_Africa.png" width="400"/>
 
 
 ### Day9: Hexagons
@@ -110,7 +110,7 @@ Day 9 of my 30-day map challenge, presenting a fake stamp of Taiwan's topographi
   - TaiwanDEM: < https://data.gov.tw/dataset/35430 >
   - Ocean: < https://www.gebco.net/ >
 
-<img src="2023_Challenge/Map/Day9_Hexagons.png" width="400"/>
+<img src="Map/Day9_Hexagons.png" width="400"/>
 
 ### Day10: NorthAmerica
 **Railway in North America**
@@ -121,7 +121,7 @@ Day 10 of my 30-day map challenge, presenting the railway of North America.
   - Ocean O2 distribution: < https://www.nodc.noaa.gov/OC5/WOA05/pr_woa05.html >
   - Railway : < https://hub.arcgis.com/....../fedmaps::north....../about >
 
-<img src="2023_Challenge/Map/Day10_NorthAmerica.png" width="400"/>
+<img src="Map/Day10_NorthAmerica.png" width="400"/>
 
 ### Day13: Choropleth
 **Records of Specimens in the Wild**
@@ -132,7 +132,7 @@ On the 13th day of my 30-day map challenge, I plot the distribution of plant spe
   - Ocean: < https://www.gebco.net/ >
   - Gbif data: < https://doi.org/10.15468/dl.fm2gfh >
 
-<img src="2023_Challenge/Map/Day13_Choropleth.gif" width="400"/>
+<img src="Map/Day13_Choropleth.gif" width="400"/>
 
 ### Day14: Europe
 **European Railway Map**
@@ -142,14 +142,14 @@ On the 14th day of my 30-day map challenge, I use the R program to present the r
 - Data source:
   - railway: < http://www.mapcruzin.com/dow....../europe-railways-shape.zip >
 
-<img src="2023_Challenge/Map/Day14_Europe.png" width="400"/>
+<img src="Map/Day14_Europe.png" width="400"/>
 
 ### Day15: Open Street Map
 **Chiayi, Taiwan**
 
 On the 15th day of my 30-day map challenge, I mapped my hometown, Chiayi, Taiwan, which was a wood production city in the past.
 
-<img src="2023_Challenge/Map/Day15_OpenStreetMap.png" width="400"/>
+<img src="Map/Day15_OpenStreetMap.png" width="400"/>
 
 ### Day16: Oceania
 **Oceania**
@@ -160,7 +160,7 @@ On the 16th day of my 30-day map challenge, I used the Ocean Bottom map along wi
   - Ocean bottom map : < https://www.naturalearthdata.com/ >
   - gbif: < https://doi.org/10.15468/dl.n5849k >
   
-<img src="2023_Challenge/Map/Day16_Oceania.png" width="400"/>
+<img src="Map/Day16_Oceania.png" width="400"/>
 
 ### Day17:Flow
 **Their Origin: Naturalized Flora in Taiwan**
@@ -170,7 +170,7 @@ My 17th map in the 30-day map challenge aims to present the original areas of na
 - Data source:
   - Naturalized species: < https://doi.org/10.6165/tai.2022.67.1 >
 
-<img src="2023_Challenge/Map/Day17_Flow.png" width="400"/>
+<img src="Map/Day17_Flow.png" width="400"/>
 
 ### Day18: Atomosphere
 **Change of the Global Temperature**
@@ -181,7 +181,7 @@ On the 18th day of the 30-day map challenge, I mapped global temperature changes
   - Temperature data < https://www.ncei.noaa.gov/....../ghcn....../data-access >
   - Temperature data Reference: < https://doi.org/10.1175/JCLI-D-18-0094.1 >
 
-<img src="2023_Challenge/Map/Day18_Atomosphere.gif" width="400"/>
+<img src="Map/Day18_Atomosphere.gif" width="400"/>
 
 ### Day19: 5 Minute Map
 **Copy the code to enhance work efficiency**
@@ -189,7 +189,7 @@ On the 18th day of the 30-day map challenge, I mapped global temperature changes
 On the 19th day of the 30-day map challenge, I spent five minutes plotting the streets around Taipei Station. I copied my previous code, JUST changed the location and color, and still couldn't finish it to be perfect. So, it is conceivable that starting from 0 would take more time than this.
 
 
-<img src="2023_Challenge/Map/Day19_5MinuteMap.png" width="400"/>
+<img src="Map/Day19_5MinuteMap.png" width="400"/>
 
 ### Day20: outdoor
 **Alishan Centennial Railway**
@@ -201,7 +201,7 @@ On the 20th day of the 30-day map challenge, I mapped the Alishan Railway in Tai
   - Raiway: OpenStreetMap台灣
   - Information about the railway: < https://en.wikipedia.org/wiki/Alishan_Forest_Railway >
 
-<img src="2023_Challenge/Map/Day20_Outdoor.png" width="400"/>
+<img src="Map/Day20_Outdoor.png" width="400"/>
 
 
 ### Day21: Raster
@@ -212,7 +212,7 @@ On the 21st day of the 30-day map challenge, I mapped the heatmap of vascular re
 - Data source: 
   - species distribution: < https://doi.org/10.15468/dl.3fs3cv >
 
-<img src="2023_Challenge/Map/Day21_Raster.png" width="400"/>
+<img src="Map/Day21_Raster.png" width="400"/>
 
 ### Day22: North is not always up
 **North is not always up**
@@ -222,7 +222,7 @@ On the 22nd day of the 30-day map challenge, I mapped the rotated Pacific Ocean,
 - Data source: 
   - Ocean DEM : < https://www.naturalearthdata.com/ >
   
-<img src="2023_Challenge/Map/Day22_NorthIsNotAlwaysUp.png" width="400"/>
+<img src="Map/Day22_NorthIsNotAlwaysUp.png" width="400"/>
 
 ### Day23: 3D
 **Taiwan, An Islands After Plate Collision**
@@ -233,14 +233,14 @@ On the 23rd day of the 30-day map challenge, I mapped a 3D topographic Taiwan ma
   - Ocean DEM : < https://www.naturalearthdata.com/ >
   - Taiwan DEM: <  https://data.gov.tw/dataset/35430 >  
 
-<img src="2023_Challenge/Map/Day23_3D.mp4" width="400"/>
+<img src="Map/Day23_3D.mp4" width="400"/>
 
 ### Day24: Black and white
 **YiLan City**
 
 On the 24th day of the 30-day map challenge, I mapped a black and white map using OpenStreetMap for Yilan City, Taiwan.
 
-<img src="2023_Challenge/Map/Day24_BlackAndWhite.png" width="400"/>
+<img src="Map/Day24_BlackAndWhite.png" width="400"/>
 
 
 ### Day25: Antarctia
@@ -248,14 +248,14 @@ On the 24th day of the 30-day map challenge, I mapped a black and white map usin
 
 On the 25th day of the 30-day map challenge, I mapped an Antarctica map.
 
-<img src="2023_Challenge/Map/Day25_Antarctica.png" width="400"/>
+<img src="Map/Day25_Antarctica.png" width="400"/>
 
 ### Day26: Minimal
 **Nauru: the minimal island country in the world**
 
 On the 26th day of the 30-day map challenge, I mapped street lines for the smallest island country in the world, Nauru.
 
-<img src="2023_Challenge/Map/Day26_Minimal.png" width="400"/>
+<img src="Map/Day26_Minimal.png" width="400"/>
 
 ### Day27: Dots
 **Telegraph pole, Connecting and Lighting Up Our Lives**
@@ -266,7 +266,7 @@ Those are dots, not lines!!!
 - Data source: 
   - Telegraph pole data: https://data.gov.tw/dataset/33305
   
-<img src="2023_Challenge/Map/Day27_Dots.png" width="400"/>
+<img src="Map/Day27_Dots.png" width="400"/>
 
 ### Day28: Is this chart or a map
 **Top 10 cities with the densest telegraph poles**
@@ -276,7 +276,7 @@ On the 28th day of the 30-day map challenge, I compiled the data on telegraph po
 - Data source: 
   - Telegraph pole data: https://data.gov.tw/dataset/33305
 
-<img src="2023_Challenge/Map/Day28_IsThisChartOrAMap.mp4" width="400"/>
+<img src="Map/Day28_IsThisChartOrAMap.mp4" width="400"/>
 
 ### Day29: Population
 **3D Population distribution in Taiwan** 
@@ -286,7 +286,7 @@ On the 29th day of the 30-day map challenge, I plotted the population distributi
 - Data source: 
   - Population data:  https://data.gov.tw/dataset/117988 
 
-<img src="2023_Challenge/Map/Day29_Population.png" width="400"/>
+<img src="Map/Day29_Population.png" width="400"/>
 
 
 ### Day30: My Favorite
@@ -297,5 +297,5 @@ Finally, on the 30th and last day of my map challenge, I created a Joy plot to i
 - Data source: 
   - TaiwanDEM: < https://data.gov.tw/dataset/35430 >
 
-<img src="2023_Challenge/Map/Day30_MyFavorite.png" width="400"/>
+<img src="Map/Day30_MyFavorite.png" width="400"/>
 
