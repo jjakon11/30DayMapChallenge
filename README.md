@@ -7,4 +7,4 @@ This is my second year attending the 30-Day Map Challenge on social media, which
 
 Daily topic for 2023 in November:
 
-<img src="Map/2024_November.jpg" width="500"/>
+<img src="2024_Challenge/Map/2024_November.jpg" width="500"/>
