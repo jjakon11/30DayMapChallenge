@@ -14,7 +14,7 @@ Daily topic for 2023 in November:
 **Map point of Taiwan climate station**
 I attend a great challenge in this November. No idea when I will give up this hard core challenge. My goal is to out put all of the map by R program around 1 hours (hopefully...). 
 
-<img src="2023_Challenge/Map/Day1_points.png" width="400"/>
+<img src="Map/Day1_points.png" width="400"/>
 
 ### Day2: Lines
 **River Map in Taiwan**
