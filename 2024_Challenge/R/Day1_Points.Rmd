@@ -1,0 +1,123 @@
+---
+title: "Day1_Points"
+output: html_document
+date: "2024-10-05"
+editor_options: 
+  chunk_output_type: console
+---
+# setwd
+```{r}
+setwd("E:/Drive/6_Rworld/30DayMapChallenge")
+
+```
+
+# library
+```{r}
+library(ggplot2)
+library(dplyr)
+library(raster)
+library(rayshader)
+library(ggfx)
+library(ggpubr)
+```
+
+# function
+```{r}
+source("./2024_Challenge/Function/convert_deg_min_to_dec.r")
+
+```
+
+#-----------------------
+# 1. Data input
+```{r}
+LightH <- read.csv("./2024_Challenge/Process/Day1_Points/Data/Lighthouse_point.csv")
+
+```
+
+```{r}
+taiwan_DEM <- raster("./MapDt/TaiwanMapDEM/tif file/twdtm_asterV2_30m.tif" )
+```
+* https://data.gov.tw/dataset/35430
+
+```{r}
+Land_DEM <- raster("./MapDt/combined_dem.tif")
+
+```
+* https://viewfinderpanoramas.org/dem3.html#himalayas
+
+# 2. Data compilation
+```{r}
+LightH_Point <- LightH %>%
+    mutate(X_dec = convert_deg_min_to_dec(X),
+           Y_dec = convert_deg_min_to_dec(Y))
+
+```
+
+```{r}
+DEM_aggr <- aggregate(taiwan_DEM, fact=10)
+Tai_DEM <- rasterToPoints(DEM_aggr)
+Tai_DEM2 <- as.data.frame(Tai_DEM) %>%
+  rename(elevation='Layer_1')
+```
+
+```{r}
+Land_DEM2 <- aggregate(Land_DEM, fact=10)
+Global_DEM <- rasterToPoints(Land_DEM2) 
+Global_DEM2 <- as.data.frame(Global_DEM) %>%
+  rename(elevation="combined_dem") %>%
+  filter(elevation!=0)
+```
+
+
+# 3. Plotting
+```{r}
+mypal <- colorRampPalette(c("#363C48","#62554D","#844d2b","#b06739"))
+
+LT_plot <- ggplot()+  
+  
+  geom_tile(data=Global_DEM2, mapping=aes(x=x, y=y, fill=elevation))+
+  geom_tile(data=Tai_DEM2  , mapping=aes(x=x, y=y, fill=elevation))+
+
+  geom_point(LightH_Point, mapping=aes(x=X_dec, y=Y_dec), 
+             color="#e7e77b", alpha=0.8, size=0.9)+
+  with_blur(geom_point(data=LightH_Point, 
+                       mapping=aes(x=X_dec, y=Y_dec), 
+                       color="yellow", 
+                       size=5, 
+                       alpha=0.3), 
+            sigma = 8)+
+  #geom_text(LightH_Point, mapping=aes(x=X_dec, y=Y_dec, label = Name), size=1.0)+
+  scale_fill_gradientn(colours = mypal(20))+
+  scale_alpha(range = c(0.2, 0.3), guide = "none")+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand=c(0,0))+
+  coord_sf(xlim = c(117.6, 122.5), ylim = c(20.7, 27.5),crs=4326)+
+  theme(panel.background = element_rect(fill ="#4d556a" ), 
+        panel.grid.major = element_line(color="#444c5e", linewidth=0.1),
+        axis.text.x = element_text(vjust = 15, size=5, color="#0F381D"),
+        axis.text.y = element_text(angle = 270, vjust = 15, hjust=0.5, size=5, color="#0F381D"),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position="none")
+LT_plot
+```
+
+# 4. Rashader
+```{r}
+plot_gg(LT_plot,multicore=T,width=10,height=10,scale=160,
+        sunangle=270, anglebreaks = seq(20,30,0.2),
+        save_height_matrix = TRUE,windowsize = c(1000, 1000))
+
+render_snapshot(filename = "TaiwanLight", software_render = TRUE, width = 5060, height =5000)
+
+
+```
+
+
+```{r}
+ggexport(LT_plot, filename = "LT_plot.jpg", width = 6000, height=6000, res=800)
+ggsave("Day_Point/blurred_plot.png", plot = LT_plot, dpi = 300, width = 8, height = 6)
+```
+
