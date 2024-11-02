@@ -1,0 +1,75 @@
+---
+title: "Day2_Line"
+author: "Chen-Chia Ku"
+date: "2024-10-21"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# setwd
+```{r}
+setwd("E:/Drive/6_Rworld/30DayMapChallenge/2024_Challenge")
+```
+
+# library
+```{r}
+library(ggplot2)
+library(dplyr)
+library(raster)
+library(tidyr)
+library(ggpubr)
+
+library(ggridges)# install.packages("ggridges")
+```
+
+#-----------
+# 1. Data input
+```{r}
+taiwan_DEM <- raster("./MapDt/TaiwanMapDEM/tif file/twdtm_asterV2_30m.tif" )
+```
+
+# 2. Data compiling
+```{r}
+DEM_aggr_x2 <- aggregate(taiwan_DEM, fact=c(2,1))
+Tai_DEM_x2 <- rasterToPoints(DEM_aggr_x2)
+Tai_DEM2_x2 <- as.data.frame(Tai_DEM_x2) %>%
+  rename(elevation='Layer_1')
+
+
+
+#Mount Jade: 120.95, 23.47
+
+Tai_DEM3_x2 <- Tai_DEM2_x2 %>%
+  filter(y>23.45& y<23.55) %>%
+  filter(x>120.8& x<121.1)
+
+
+```
+
+# 3. Plot
+```{r}
+
+M_plot <- ggplot() +
+  geom_density_ridges(data =Tai_DEM3_x2, 
+                      aes(x = -y, y = x, group = x, height = elevation),
+                      stat = 'identity',
+                      fill="#444c5e",
+                      color="#FBF2E0", 
+                      scale =2000,size = 0.5, 
+                      rel_min_height = 0.669)+
+  theme(panel.background = element_rect(fill="#444c5e", color=NA),
+        panel.grid = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_blank(), 
+        axis.ticks = element_blank())
+M_plot 
+
+```
+
+#--------------
+# output
+```{r}
+ggexport(M_plot, filename = "Jade_Moutain_Dark.png", width = 10000,height=6000,res = 700)
+
+```
