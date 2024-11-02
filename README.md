@@ -25,6 +25,6 @@ Taiwan is a country made up of multiple islands located at the west of the Pacif
 
 Mt. Jade, or Yushan, is the highest mountain in Taiwan. The lines on the map represent longitude, not contour lines. This figure was inspired by a similar image of the Himalayas on Xwitter, and I attempted to recreate it without any reference code. This truly captures the shape of Mt. Jade, the highest peak in Taiwan.
 
-<img src="2024_Challenge/Map/Day2_Lines.png" width="400"/>
+<img src="2024_Challenge/Map/Day2_Lines.PNG" width="400"/>
 
 ***
