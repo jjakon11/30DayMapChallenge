@@ -1,0 +1,138 @@
+---
+title: "Day3_Polygon"
+author: "Chen-Chia Ku"
+date: "2024-10-23"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+```{r}
+setwd("E:/Drive/6_Rworld/30DayMapChallenge")
+```
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(raster)
+library(ggnewscale)
+library(sf)
+library(ggpubr)
+
+library(ggspatial)
+library(osmdata)
+
+library(metR)
+```
+
+```{r}
+taiwan_DEM <- raster("./MapDt/TaiwanMapDEM/tif file/twdtm_asterV2_30m.tif" )
+
+YuShan_shp <- sf::st_read(dsn = "./MapDt/YuShanNP", layer="YuShanNp")
+
+
+```
+
+
+```{r}
+DEM_aggr <- aggregate(taiwan_DEM, fact=10)
+Tai_DEM <- rasterToPoints(DEM_aggr)
+Tai_DEM2 <- as.data.frame(Tai_DEM) %>%
+  rename(elevation='Layer_1') %>%
+  filter(x>=120.10, x<=121.7,
+         y>=23.01, y<=23.95 )
+
+#mod <- loess(elevation ~ x +y, data = Tai_DEM2, span = 0.001)
+#df <- with(Tai_DEM2, 
+#           expand.grid(y = seq(min(y), max(y), len =300 ),
+#                       x = seq(min(x), max(x), len = 300)))
+#df$elevation <- c(predict(mod, newdata = df, se = FALSE))
+
+
+YushanNP <- st_union(YuShan_shp)
+st_crs(YushanNP) <- 3826 
+YushanNP_wgs84 <- st_transform(YushanNP, 4326)
+```
+
+
+```{r}
+contour_Layer<- ggplot(Tai_DEM2, mapping=aes(x=x, y=y, z=elevation))+
+  geom_contour(bins = 30)#+
+  #coord_sf(xlim = c(120.7, 121.3), ylim = c(23.16, 23.64),crs=4326)
+
+contour_df <- ggplot_build(contour_Layer)$data[[1]]
+
+contour_sf <- st_as_sf(contour_df, coords = c("x", "y"), crs = 4326)%>%
+  group_by(level, piece) %>%
+  summarize(do_union = FALSE) %>%  # Do not union to keep separate lines
+  st_cast("LINESTRING")
+
+
+
+
+#contour_sf_transformed <- st_transform(contour_sf, st_crs(YushanNP_wgs84))
+
+clipped_contours <- st_intersection(contour_sf, YushanNP_wgs84)
+
+
+
+
+```
+
+
+```{r}
+Cod <- c( 120.9,23.3,
+         121.1,23.55)
+Peak <- opq(bbox = Cod) %>%
+  add_osm_feature(key = 'natural', 
+                  value=c("peak")) %>%
+  osmdata_sf()
+PeakP <- Peak$osm_points %>%
+  rename(nameEN="name:en") %>%
+  filter(ref!="<NA>") %>%
+  distinct(nameEN, .keep_all = T)
+st_crs(PeakP) <- 4326
+
+```
+
+
+```{r}
+
+mypal <- colorRampPalette(c("#f5ebe3", "grey80","#C6E0BE","#2EA858","#0F381D","#005185"))
+
+Jade_poly <- ggplot()+
+  geom_contour(Tai_DEM2, mapping=aes(x=x, y=y, z=elevation), 
+               bins=80, color="grey60", linewidth = 0.1)+
+  geom_text_contour(data=Tai_DEM2 , mapping=aes(x=x, y=y, z=elevation), 
+                    stroke = 0.2, size=1.35, color="grey33",
+                    breaks = seq(0, 4000, by =250))+
+  
+  # Yushan poplygon
+  geom_sf(data=YushanNP,  alpha=0.4, fill="#c3d9e1", color="black",linewidth=0.5)+
+  # Yushan contour
+  geom_sf(data=clipped_contours, aes(color = level), linewidth=0.2)+
+  
+  # Peak in Yushan
+  geom_sf(data=PeakP, color="black", fill="#284859", shape=24 )+
+  scale_color_gradientn(colours = mypal(10))+
+  geom_sf_text(data=PeakP,aes(label=nameEN), 
+                     color="black", vjust=1, hjust=-0.1,size=2)+
+  
+  coord_sf(xlim = c(120.8, 121.25), ylim = c(23.05, 23.70),crs=4326)+
+  annotation_scale( line_width = 1.5,height = unit(0.10, "cm"))+
+  theme(panel.background = element_rect(color="black", fill="white"),
+        panel.grid = element_blank(),
+        axis.title = element_blank(),
+        axis.text.x = element_text( size=5, vjust=3),
+        axis.text.y = element_text(angle = 270, vjust = 12, hjust=0.5, size=5), 
+        axis.ticks = element_blank(), 
+        legend.position = "none")
+
+Jade_poly
+```
+
+```{r}
+ggexport(Jade_poly , filename = "2024_Challenge/Output_Map/Day3_Polygon_test.png", width = 7000, height=10000, res=1200)
+
+```
+
+
