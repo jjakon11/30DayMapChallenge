@@ -36,6 +36,6 @@ Mt. Jade, or Yushan, is the highest mountain in Taiwan. The lines on the map rep
 
 Yushan (Mt. Jade) National Park is the highest national park in Taiwan. I mapped the contour plot and clipped it to the park boundaries to showcase the beautiful elevation gradient of Yushan National Park, the Jade.
 
-<img src="2024_Challenge/Map/Day2_Polygons.PNG" width="400"/>
+<img src="2024_Challenge/Map/Day2_Polygons.png" width="400"/>
 
 ***
