@@ -39,3 +39,13 @@ Yushan (Mt. Jade) National Park is the highest national park in Taiwan. I mapped
 <img src="2024_Challenge/Map/Day3_Polygon.png" width="400"/>
 
 ***
+
+### Day4: Hexogons
+
+**Rain**
+
+I indirectly used a 30 m x 30 m Digital Elevation Model (DEM) and input it into Climate AP to obtain the average rainfall for each grid over 30 years, from 1991 to 2020. I then created a hexbin map to show the rainfall density. 
+
+<img src="2024_Challenge/Map/Day4_Hexagons.png" width="400"/>
+
+***
