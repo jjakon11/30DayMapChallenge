@@ -33,6 +33,7 @@ library(scales)        # Nicer labeling functions
 library(patchwork)     # Combine plots nicely
 library(ggspatial)     # Nicer map features like scale bars
 library(NatParksPalettes)
+library(ggpubr)
 ```
 
 # 1. United State Data
@@ -50,7 +51,7 @@ stops_raw <- tribble(
   "Stop",     "Logan, Utah", 
   "Pass",     "Baker City, Oregon", 
   "Stop",     "Carson, Washington", 
-  "Stop",     "Portland, Washington", 
+  "Stop",     "Portland, Oregon", 
   "Stop",     "Carson, Washington",
   "Pass",     "Redmond, Oregon",  
   "Pass",     "Mount Shasta, California", 
@@ -72,8 +73,10 @@ stops_raw <- tribble(
   "Pass",     "Jackson, Wyoming",
   "Pass",     "Moran, Wyoming",  
   "Stop",     "Yellowstone NP, Wyoming",
-  "Stop",     "Gardiner, Montana", 
-  "Pass",     "Yellowstone NP, Wyoming",
+  "Stop",     "Gardiner, Montana",
+  "Pass",     "Tower Junction, Wyoming",
+  "Pass",     "Canyon Village, Wyoming",
+  "Stop",     "Grand Teton NP, Wyoming",
   "Pass",     "Alpine, Wyoming", 
   "Pass",     "Grace, Idaho",
   "Stop",     "Logan, Utah"
@@ -89,6 +92,7 @@ stops_addresses <- tribble(
   ~city, ~address,
   "Yosemite NP, California", "6107 CA-120, Groveland, California",
   "Yellowstone NP, Wyoming", "Old Faithful, Teton County, Wyoming",
+  "Grand Teton NP, Wyoming", "103 Headquarters Loop Moose,Wyoming"
 )
 
 
