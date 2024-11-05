@@ -49,3 +49,13 @@ I indirectly used a 30 m x 30 m Digital Elevation Model (DEM) and input it into 
 <img src="2024_Challenge/Map/Day4_Hexagons.png" width="400"/>
 
 ***
+
+### Day5: A Journey
+
+**My Summer Road Trip in USA**
+
+I mapped my summer road trip across the United States this year, which included a field survey and travels with my boyfriend. The breathtaking landscapes are now unforgettable memories. I will treasure it. 
+
+<img src="2024_Challenge/Map/Day5_Journey.png" width="400"/>
+
+***
