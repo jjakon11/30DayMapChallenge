@@ -1,0 +1,252 @@
+---
+title: "Day5_Journey"
+Author: "Chen-Chia Ku"
+date: "2024-11-05"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# A Big Note
+
+This code was original from [Andrew Heiss](https://doi.org/10.59350/rgwda-0tv16). I revise it into my version, my journal and my trips in United State.
+
+
+# Setwd
+```{r}
+setwd("D:/Drive/6_Rworld/30DayMapChallenge")
+
+```
+
+# Library
+
+```{r}
+library(ggplot2)
+library(dplyr)
+library(tidyverse)     # ggplot, dplyr, and friends
+library(sf)            # Handle spatial data in R in a tidy way
+library(tigris)        # Access geographic data from the US Census
+library(tidygeocoder)  # Automated geocoding
+library(osrm)          # Access OSRM through R
+library(ggrepel)       # Nicer non-overlapping labels
+library(glue)          # Easier string interpolation
+library(scales)        # Nicer labeling functions
+library(patchwork)     # Combine plots nicely
+library(ggspatial)     # Nicer map features like scale bars
+library(NatParksPalettes)
+```
+
+# 1. United State Data
+```{r}
+us_states <- states(resolution = "20m", year = 2022, cb = TRUE)
+
+lower_48 <- us_states %>% 
+  filter(!(NAME %in% c("Alaska", "Hawaii", "Puerto Rico")))
+```
+
+# 2. My Travel Data
+```{r}
+stops_raw <- tribble(
+  ~direction,  ~city,
+  "Stop",     "Logan, Utah", 
+  "Pass",     "Baker City, Oregon", 
+  "Stop",     "Carson, Washington", 
+  "Stop",     "Portland, Washington", 
+  "Stop",     "Carson, Washington",
+  "Pass",     "Redmond, Oregon",  
+  "Pass",     "Mount Shasta, California", 
+  "Pass",     "Sacramento, California", 
+  "Stop",     "Yosemite NP, California",
+  "Pass",     "Tenya Lake, California",  
+  "Pass",     "Tioga Pass Rd, California", 
+  "Pass",     "Benton, California",
+  "Pass",     "Tonopa, Nevada", 
+  "Pass",     "Ely, Nevada", 
+  "Pass",     "West Wendover, Nevada",
+  "Stop",     "Logan, Utah",  
+  "Pass",     "Cedar City, Utah", 
+  "Stop",     "Cedar Breaks National Monument, Utah",
+  "Stop",     "Logan, Utah", 
+  "Pass",     "Garden City, Utah",
+  "Pass",     "Geneva, Idaho", 
+  "Pass",     "Alpine, Wyoming", 
+  "Pass",     "Jackson, Wyoming",
+  "Pass",     "Moran, Wyoming",  
+  "Stop",     "Yellowstone NP, Wyoming",
+  "Stop",     "Gardiner, Montana", 
+  "Pass",     "Yellowstone NP, Wyoming",
+  "Pass",     "Alpine, Wyoming", 
+  "Pass",     "Grace, Idaho",
+  "Stop",     "Logan, Utah"
+)  %>% 
+  mutate(direction = fct_inorder(direction))
+
+
+```
+
+## 2.1. My Address
+```{r}
+stops_addresses <- tribble(
+  ~city, ~address,
+  "Yosemite NP, California", "6107 CA-120, Groveland, California",
+  "Yellowstone NP, Wyoming", "Old Faithful, Teton County, Wyoming",
+)
+
+
+```
+
+## 2.2. Join the Address
+```{r}
+stops_to_geocode <- stops_raw %>% 
+  left_join(stops_addresses, by = join_by(city)) %>% 
+  mutate(address = coalesce(address, city))
+
+```
+
+# 3. Get the longitude and latitude from geocode()
+
+This is the most cool thing that I am so excited, so lazy, so happy to have that coordinate automatically. 
+
+```{r}
+stops_geocoded <- stops_to_geocode %>% 
+  geocode(address, method = "osm") %>%
+  st_as_sf(coords = c("long", "lat"), crs = st_crs("EPSG:4326"))
+
+```
+
+## 3.1. Made my stop unique
+```{r}
+all_stops_unique <- stops_geocoded %>%
+  filter(direction=="Stop") %>%
+  distinct(city,.keep_all=T)
+#  slice(1:(n() - 1))
+
+```
+
+# 4. Get the path
+```{r}
+routes_raw <- stops_geocoded %>% 
+  select(-address) %>% 
+  rename(
+    origin_geometry = geometry,
+    origin_city = city
+  ) %>% 
+  mutate(
+    destination_geometry = lead(origin_geometry),
+    destination_city = lead(origin_city)
+  ) %>% 
+  filter(row_number() != n())
+
+```
+
+```{r}
+routes_geocoded_raw <- routes_raw %>% 
+  rowwise() %>% 
+  mutate(route = osrmRoute(
+    src = origin_geometry, 
+    dst = destination_geometry)
+  )
+
+```
+
+
+```{r}
+routes_geocoded <- routes_geocoded_raw %>% 
+  unnest(route, names_sep = "_") %>% 
+  st_set_geometry("route_geometry") %>% 
+  mutate(
+    distance_miles = km_to_miles(route_distance),
+    distance_text = fmt_miles(distance_miles),
+    duration_text = fmt_duration(route_duration)
+  )
+```
+
+# 5. Get the State that I have traveled 
+
+```{r}
+states_crossed_through <- st_intersection(
+  st_transform(lower_48, st_crs(routes_geocoded)),
+  routes_geocoded
+)
+
+
+states_crossed_through %>% 
+  select(STATEFP, NAME, direction)
+
+unique(states_crossed_through$NAME)
+
+# Create a column that flags if the state is cross through
+lower_48_highlighted <- lower_48 %>% 
+  mutate(visited = NAME %in% unique(states_crossed_through$NAME))
+
+```
+
+# 6. Mapping
+
+## 6.1 Adjust my boundary
+```{r}
+boundary <-st_sfc(st_point(c(-121, 24)), st_point(c(-104, 51)), crs = 4326) %>%
+    st_transform(crs = "ESRI:102003")
+
+```
+
+## 6.2 Mapping part
+```{r}
+
+RT <- ggplot() +
+  geom_sf(data = lower_48_highlighted, aes(fill = visited), color="grey60") +
+  geom_sf(data = routes_geocoded, color = "#5e0010") +
+  geom_sf(data = all_stops_unique) +
+  geom_label_repel(
+    data = all_stops_unique,
+    aes(label = city, geometry = geometry),
+   stat = "sf_coordinates", seed = 100,
+    size = 2, segment.color = clrs[3], 
+   direction="both", min.segment.length = 0
+  ) +
+  annotation_scale(
+    location = "bl", bar_cols = c("grey30", "white"),
+    unit_category = "imperial"
+  ) +
+  scale_fill_manual(values = c("grey90", "pink"), guide = "none") +
+  coord_sf(xlim=c(as.matrix(boundary[[1]])[1],
+                  as.matrix(boundary[[2]])[1]),
+           ylim=c(as.matrix(boundary[[1]])[2],
+                  as.matrix(boundary[[2]])[2]),
+           crs = st_crs("ESRI:102003")) +  # Albers
+  theme(panel.background = element_rect(color="black", fill="NA"),
+        panel.grid = element_line(color = "grey"),
+        axis.title = element_blank(),
+        axis.text.x = element_text( size=5, vjust=3),
+        axis.text.y = element_text(angle = 270, vjust = 12, hjust=0.5, size=5), 
+        axis.ticks = element_blank(), 
+        legend.position = "none")
+RT
+```
+
+```{r}
+ggexport(RT , filename = "2024_Challenge/Output_Map/Day5_Journey_test.png", width = 7000, height=10000, res=1200)
+
+```
+
+# 7. Get my whole USA
+```{r}
+USA <- ggplot() +
+  geom_sf(data = lower_48_highlighted, aes(fill = visited), color="grey60")+
+  scale_fill_manual(values = c("grey95", "pink1"), guide = "none") +
+  coord_sf(crs = st_crs("ESRI:102003"))+
+  theme(panel.background = element_rect(color="black", fill="NA"),
+        panel.grid = element_line(color = "grey"),
+        axis.title = element_blank(),
+        axis.text.x = element_text( size=5, vjust=3),
+        axis.text.y = element_text(angle = 270, vjust = 12, hjust=0.5, size=5), 
+        axis.ticks = element_blank(), 
+        legend.position = "none")
+```
+
+```{r}
+ggexport(USA , filename = "2024_Challenge/Output_Map/USA_test.png", width = 10000, height=7000, res=1200)
+
+```
+
+
+
