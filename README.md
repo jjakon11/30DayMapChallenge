@@ -59,3 +59,12 @@ I mapped my summer road trip across the United States this year, which included 
 <img src="2024_Challenge/Map/Day5_Journey.png" width="400"/>
 
 ***
+
+### Day6: Raster
+
+**Forest Coverage in Taiwan **
+
+Taiwan is an island with 60.7% of its land covered by forests. I used forest coverage data, island DEM, and ocean DEM to create a map showcasing Taiwan as a lush and beautiful 'Formosa' island.
+
+<img src="2024_Challenge/Map/Day6_Raster.png" width="400"/>
+
