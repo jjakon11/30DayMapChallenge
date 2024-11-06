@@ -1,0 +1,172 @@
+---
+title: "Day6_Raster"
+author: "Chen-Chia Ku"
+date: "2024-11-03"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# setwd
+```{r}
+setwd("E:/Drive/6_Rworld/30DayMapChallenge")
+
+```
+
+# library
+```{r}
+library(raster)
+library(ggplot2)
+library(dplyr)
+library(sf)
+library(ggnewscale)
+library(ggpubr)
+library(ggspatial)
+
+```
+
+# 1. Data
+```{r}
+Forest_DEM <- raster("E:/Drive/6_Rworld/30DayMapChallenge/MapDt/Taiwan_Forest_COVER/Taiwan_Forest_COVER.tif" )
+Forest_DEM2 <- raster("E:/Drive/6_Rworld/30DayMapChallenge/MapDt/Taiwan_Forest_COVER/Taiwan_Forest_COVER2.tif" )
+Forest_DEM3 <- raster("E:/Drive/6_Rworld/30DayMapChallenge/MapDt/Taiwan_Forest_COVER/Taiwan_Forest_COVER3.tif" )
+Ocean_DEM <- raster("./MapDt/TaiwanOCean/gebco_2023_n27.0_s20.0_w116.0_e125.0.tif")
+
+taiwan_shp <-sf::st_read(dsn ="./MapDt/Taiwan", layer="gadm36_TWN_2")
+
+taiwan_DEM <- raster("./MapDt/TaiwanMapDEM/tif file/twdtm_asterV2_30m.tif" )
+```
+*Forest DEM data: <https://land.copernicus.eu/en>
+*Taiwan DEM data: <https://data.gov.tw/dataset/35430>
+
+
+# 2. Data compiling
+```{r}
+# Forest Coverage Data
+
+Forest_Cover1 <- rasterToPoints(Forest_DEM$Taiwan_Forest_COVER) %>% 
+  as.data.frame(.) %>%
+  rename(Forest_COVER="Taiwan_Forest_COVER") %>%
+  filter(!Forest_COVER>125, 
+         Forest_COVER>100)
+Forest_Cover2 <- rasterToPoints(Forest_DEM2$Taiwan_Forest_COVER2) %>% 
+  as.data.frame(.) %>%
+  rename(Forest_COVER="Taiwan_Forest_COVER2") %>%
+  filter(!Forest_COVER>125, 
+         Forest_COVER>100) %>%
+  filter(x<121.5)
+
+Forest_Cover3 <- rasterToPoints(Forest_DEM3$Taiwan_Forest_COVER3) %>% 
+  as.data.frame(.) %>%
+  rename(Forest_COVER="Taiwan_Forest_COVER3") %>%
+  filter(!Forest_COVER>125, 
+         Forest_COVER>100) %>%
+  filter(y<25)
+
+
+
+Forest_Cover <- bind_rows(Forest_Cover1,Forest_Cover2,Forest_Cover3 )
+
+
+#Ocean Data
+Ocean_aggr <- aggregate(Ocean_DEM, fact=5)
+Ocean_DEM1 <- rasterToPoints(Ocean_aggr)
+Ocean_DEM2 <- as.data.frame(Ocean_DEM1) %>%
+  rename(elevation='gebco_2023_n27.0_s20.0_w116.0_e125.0')
+
+
+
+Taiwan_Union <- st_union(taiwan_shp)
+
+
+
+#Taiwan DEM
+DEM_aggr <- aggregate(taiwan_DEM, fact=10)
+Tai_DEM <- rasterToPoints(DEM_aggr)
+Tai_DEM2 <- as.data.frame(Tai_DEM) %>%
+  rename(elevation='Layer_1') %>%
+  filter(!(x < 120 & y > 24.5))
+
+
+
+
+```
+
+# 3. Mapping
+```{r}
+Taiwanpal <- colorRampPalette(c("#2C3644","#5FBF5E" ))
+OceanPal <- colorRampPalette(c("#454c5e","#343a47","#203040" ))
+mypal <- colorRampPalette(c("#5FBF5E","#6dc56c","#89d088" ))
+
+
+Forest_raster <- ggplot()+
+  geom_tile(data=Ocean_DEM2, mapping=aes(x=x, y=y, fill=elevation))+
+  scale_fill_gradientn(colours = OceanPal(20))+
+  new_scale("fill") +
+  
+
+  
+  geom_tile(Forest_Cover, mapping=aes(x=x, y=y, fill=Forest_COVER))+
+  scale_fill_gradientn(colours = mypal(20))+
+  new_scale("fill") +
+  
+  geom_tile(data=Tai_DEM2  , mapping=aes(x=x, y=y, fill=elevation), alpha=0.45)+
+  scale_fill_gradientn(colours = Taiwanpal(20))+
+  
+  
+  geom_sf(data=Taiwan_Union ,fill=NA, colour="grey40", alpha=0, linewidth=0.1)+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand=c(0,0))+
+  coord_sf(xlim = c(118.6, 123.2), ylim = c(21.6, 27.3),crs=4326)+
+ 
+  annotation_scale( line_width = 1.5,height = unit(0.10, "cm"), bar_cols = c("#527D61", "white"))+
+  theme(panel.background = element_rect(fill = "#343a47"), 
+        panel.grid = element_blank(), 
+        plot.margin = margin(0, 0, 0, 0, "cm"),
+        axis.text.x = element_text(vjust = 15, size=5, color="#4E6762"),
+        axis.text.y = element_text(angle = 270, vjust = 15, hjust=0.5, size=5, color="#4E6762"),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(), 
+        legend.position = "none")
+Forest_raster
+```
+
+
+```{r}
+ggexport(Forest_raster, filename = "2024_Challenge/Output_Map/Forest_raster.png", width = 7200, height=9000, res=800)
+
+```
+
+# 4. Pichart for coverage
+
+```{r}
+
+TFdt <- data.frame(ForestTypes=c("broadleaved forest", "coniferous forest", "coniferous and broadleaved mixed forest",
+                                 "bamboo forest", "bamboo and wood forest", "others"), 
+                   Percent=c(66.90, 13.62, 7.80, 5.12, 5.23, 1.33))
+
+TFdt$ymax <- cumsum(TFdt$Percent)
+TFdt$ymin <- c(0, head(TFdt$ymax, n=-1))
+
+
+FTPal <- colorRampPalette(c("#5FBF5E","#4a5264" ))
+
+FPchart <- ggplot(TFdt,  aes(ymax=ymax, ymin=ymin, xmax=4, xmin=3, fill=ForestTypes))+
+  geom_rect()+
+  coord_polar(theta = 'y')+
+  scale_fill_manual(values = FTPal(6))+
+  xlim(c(1, 4))+
+  theme(panel.background = element_blank(), 
+        panel.grid = element_blank(), 
+        plot.margin = margin(0, 0, 0, 0, "cm"),
+        axis.text = element_blank(),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(), 
+        legend.position = "none")
+FPchart
+
+```
+
+```{r}
+ggexport(FPchart, filename = "2024_Challenge/Output_Map/FPchart.png", width = 7200, height=7200, res=600)
+
+```
