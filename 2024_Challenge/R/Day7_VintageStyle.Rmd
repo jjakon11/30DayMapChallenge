@@ -1,0 +1,98 @@
+---
+title: "Day7_Vitage_Map"
+author: "Chen-Chia Ku"
+date: "2024-11-08"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+```{r}
+library(raster)
+library(ggplot2)
+library(dplyr)
+library(ggridges)# install.packages("ggridges")
+library(ggspatial) #annotation_north_arrow
+library(sf)
+```
+
+
+```{r}
+taiwan_DEM <- raster("./MapDt/TaiwanMapDEM/tif file/twdtm_asterV2_30m.tif" )
+
+taiwan_shp <-sf::st_read(dsn ="./MapDt/Taiwan", layer="gadm36_TWN_2")
+
+Ocean_DEM <- raster("./MapDt/TaiwanOCean/gebco_2023_n27.0_s20.0_w116.0_e125.0.tif")
+```
+
+```{r}
+
+
+Taiwan_Union <- st_union(taiwan_shp)
+
+
+DEM_aggr <- aggregate(taiwan_DEM, fact=c(200,5))
+Tai_DEM <- rasterToPoints(DEM_aggr)
+Tai_DEM2 <- as.data.frame(Tai_DEM) %>%
+  rename(elevation='Layer_1') 
+
+
+DEM_aggr2 <- aggregate(taiwan_DEM, fact=c(40,5))
+Tai_DEM_X2 <- rasterToPoints(DEM_aggr2)
+Tai_DEM2_X2<- as.data.frame(Tai_DEM_X2) %>%
+  rename(elevation='Layer_1') %>%
+  filter(!(x < 120 & y > 24.5))
+
+
+#Ocean Data
+Ocean_aggr <- aggregate(Ocean_DEM, fact=5)
+Ocean_DEM1 <- rasterToPoints(Ocean_aggr)
+Ocean_DEM2 <- as.data.frame(Ocean_DEM1) %>%
+  rename(elevation='gebco_2023_n27.0_s20.0_w116.0_e125.0')
+
+
+
+```
+
+
+```{r}
+OceanPal <- colorRampPalette(c("#FBF2E0","#b1d1b0", "#f4c690" ))
+
+Formosa <- ggplot() +
+  #geom_tile(data=Ocean_DEM2, mapping=aes(x=-y, y=x, fill=elevation))+
+  #scale_fill_gradientn(colours = OceanPal(20))+
+  #new_scale("fill") +
+  geom_density_ridges(data = Tai_DEM2_X2, 
+                      aes(x = -y, y = x, group = x, height = elevation),
+                      stat = 'identity',
+                      color="#FBF2E0", 
+                      scale = 0,size = 1.0, rel_min_height = 0.01)+
+  geom_density_ridges(data = Tai_DEM2, 
+                      aes(x = -y, y = x, group = x, height = elevation),
+                      stat = 'identity',
+                      fill="#8DBB8B",
+                      color="#343a47", 
+                      scale = 1.7,size = 0.5, rel_min_height = 0.038, 
+                      alpha=0.95)+
+  annotation_north_arrow(location = "tl", which_north = "false",  
+                         pad_x = unit(4, "cm"), pad_y = unit(8, "cm"), 
+                         height = unit(3.0, "cm"), width = unit(3.0, "cm") , 
+                         style = north_arrow_nautical(text_col = NA,
+                                                      line_col = '#343a47', 
+                                                      fill = c("#343a47", "#FBF2E0")))+
+  scale_y_continuous(limits = c(119, 123.7))+
+  scale_x_continuous(limits = c(-26, -21.3))+
+   theme(panel.background = element_rect(fill=NA, color=NA),
+        panel.grid = element_blank(),
+        axis.title = element_blank(),
+        axis.text = element_blank(), 
+        axis.ticks = element_blank(), 
+        legend.position = "none")
+Formosa
+
+ggexport(Formosa, filename = "2024_Challenge/Output_Map/Formosa.png", width = 10000,height=9000,res = 700)
+  
+#geom_sf(data=Taiwan_Union ,fill=NA, colour="grey40", alpha=0, linewidth=0.1)+
+  #coord_sf(xlim = c(118.6, 123.2), ylim = c(21.6, 26))
+
+```
