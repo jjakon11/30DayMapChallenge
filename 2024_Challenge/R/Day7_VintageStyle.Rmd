@@ -6,7 +6,12 @@ output: html_document
 editor_options: 
   chunk_output_type: console
 ---
+# setwd
+```{r}
+setwd("D:/Drive/6_Rworld/30DayMapChallenge")
+```
 
+# library
 ```{r}
 library(raster)
 library(ggplot2)
@@ -16,20 +21,14 @@ library(ggspatial) #annotation_north_arrow
 library(sf)
 ```
 
-
+# 1.Data
 ```{r}
 taiwan_DEM <- raster("./MapDt/TaiwanMapDEM/tif file/twdtm_asterV2_30m.tif" )
 
-taiwan_shp <-sf::st_read(dsn ="./MapDt/Taiwan", layer="gadm36_TWN_2")
-
-Ocean_DEM <- raster("./MapDt/TaiwanOCean/gebco_2023_n27.0_s20.0_w116.0_e125.0.tif")
 ```
 
+# 2.Data compiling
 ```{r}
-
-
-Taiwan_Union <- st_union(taiwan_shp)
-
 
 DEM_aggr <- aggregate(taiwan_DEM, fact=c(200,5))
 Tai_DEM <- rasterToPoints(DEM_aggr)
@@ -42,26 +41,11 @@ Tai_DEM_X2 <- rasterToPoints(DEM_aggr2)
 Tai_DEM2_X2<- as.data.frame(Tai_DEM_X2) %>%
   rename(elevation='Layer_1') %>%
   filter(!(x < 120 & y > 24.5))
-
-
-#Ocean Data
-Ocean_aggr <- aggregate(Ocean_DEM, fact=5)
-Ocean_DEM1 <- rasterToPoints(Ocean_aggr)
-Ocean_DEM2 <- as.data.frame(Ocean_DEM1) %>%
-  rename(elevation='gebco_2023_n27.0_s20.0_w116.0_e125.0')
-
-
-
 ```
 
-
+# 3. Mapping :)
 ```{r}
-OceanPal <- colorRampPalette(c("#FBF2E0","#b1d1b0", "#f4c690" ))
-
 Formosa <- ggplot() +
-  #geom_tile(data=Ocean_DEM2, mapping=aes(x=-y, y=x, fill=elevation))+
-  #scale_fill_gradientn(colours = OceanPal(20))+
-  #new_scale("fill") +
   geom_density_ridges(data = Tai_DEM2_X2, 
                       aes(x = -y, y = x, group = x, height = elevation),
                       stat = 'identity',
@@ -90,9 +74,10 @@ Formosa <- ggplot() +
         legend.position = "none")
 Formosa
 
+```
+
+```{r}
+
 ggexport(Formosa, filename = "2024_Challenge/Output_Map/Formosa.png", width = 10000,height=9000,res = 700)
   
-#geom_sf(data=Taiwan_Union ,fill=NA, colour="grey40", alpha=0, linewidth=0.1)+
-  #coord_sf(xlim = c(118.6, 123.2), ylim = c(21.6, 26))
-
 ```
