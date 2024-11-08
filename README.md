@@ -68,3 +68,13 @@ Taiwan is an island with 60.7% of its land covered by forests. I used forest cov
 
 <img src="2024_Challenge/Map/Day6_Raster.png" width="400"/>
 
+***
+
+### Day7: Vintage Style
+
+**HET EYLAND FORMOSA**
+
+Today, I used a digital elevation model (DEM) to create a 2024 rendition inspired by Francois Valentijn's 1726 map of Formosa. Using modern data and techniques, I aimed to reimagine the map, not replicate it exactly.
+
+<img src="2024_Challenge/Map/Day7_VintageStyle.png" width="400"/>
+
