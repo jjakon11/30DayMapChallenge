@@ -1,0 +1,111 @@
+---
+title: "Day8_HDX_Data"
+author: "Chen-Chia Ku"
+date: "2024-11-08"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# setwd
+```{r}
+setwd("E:/Drive/6_Rworld/30DayMapChallenge")
+
+```
+
+# library
+```{r}
+library(ggplot2)
+library(dplyr)
+library(sf)
+library(raster)
+library(rayshader)
+library(ggfx)
+library(ggpubr)
+library(ggnewscale)
+```
+
+# 1. Data
+```{r}
+Earthquake <- read.csv("./2024_Challenge/Process/Day8_HDX_Data/Earthquake1990_2024.csv")
+taiwan_shp <-sf::st_read(dsn ="./MapDt/Taiwan", layer="gadm36_TWN_2")
+Ocean_DEM <- raster("./MapDt/TaiwanOCean/gebco_2023_n27.0_s20.0_w116.0_e125.0.tif")
+taiwan_DEM <- raster("./MapDt/TaiwanMapDEM/tif file/twdtm_asterV2_30m.tif" )
+Land_DEM <- raster("./MapDt/combined_dem.tif")
+```
+
+# 2. Data compiling
+```{r}
+#Earthquake data
+Edt1 <- Earthquake %>%
+  filter(Scale>=4)
+
+#Taiwan Shape
+Taiwan_Union <- st_union(taiwan_shp)
+
+
+#Ocean Data
+Ocean_aggr <- aggregate(Ocean_DEM, fact=5)
+Ocean_DEM1 <- rasterToPoints(Ocean_aggr)
+Ocean_DEM2 <- as.data.frame(Ocean_DEM1) %>%
+  rename(elevation='gebco_2023_n27.0_s20.0_w116.0_e125.0')
+
+#Taiwan DEM
+DEM_aggr <- aggregate(taiwan_DEM, fact=10)
+Tai_DEM <- rasterToPoints(DEM_aggr)
+Tai_DEM2 <- as.data.frame(Tai_DEM) %>%
+  rename(elevation='Layer_1')
+
+#China DEM
+Land_DEM2 <- aggregate(Land_DEM, fact=10)
+Global_DEM <- rasterToPoints(Land_DEM2) 
+Global_DEM2 <- as.data.frame(Global_DEM) %>%
+  rename(elevation="combined_dem") %>%
+  filter(elevation!=0)
+```
+
+
+# 3. Mapping
+```{r}
+OceanPal <- colorRampPalette(c("#21181b", "#38292e","#714546" ))
+Taiwanpal <- colorRampPalette(c("#4d2f2f","#775038","#b06739", "#ca855a","#ddb195"))
+
+Earth <- ggplot()+
+  geom_point(data=Ocean_DEM2, mapping=aes(x=x, y=y, fill=elevation, color=elevation))+
+  scale_fill_gradientn(colours = OceanPal(30))+
+  scale_color_gradientn(colours = OceanPal(30))+
+  new_scale("fill") +
+  
+  geom_tile(data=Global_DEM2, mapping=aes(x=x, y=y, fill=elevation))+
+  geom_tile(data=Tai_DEM2  , mapping=aes(x=x, y=y, fill=elevation))+
+  scale_fill_gradientn(colours = Taiwanpal(20))+
+  
+  with_blur(geom_point(data=Edt1, 
+                       mapping=aes(x=Long, y=Lat), 
+                       color="#bb6865", 
+                       size=4, 
+                       alpha=0.15), 
+            sigma = 8)+
+  geom_point(Edt1, mapping=aes(x=Long, y=Lat), size=0.06, color="#e1d7ca")+
+  geom_sf(data=Taiwan_Union ,fill=NA, colour="grey40", alpha=0, linewidth=0.1)+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand=c(0,0))+
+  coord_sf(xlim =c(118.6, 123), ylim = c(21.1, 27),crs=4326)+
+  theme(panel.background = element_rect(fill ="#4d556a" ), 
+        panel.grid.major = element_line(color="#444c5e", linewidth=0.1),
+        axis.text.x = element_text(vjust = 15, size=5, color="#ca855a"),
+        axis.text.y = element_text(angle = 270, vjust = 15, hjust=0.5, size=5, color="#ca855a"),
+        axis.ticks = element_blank(),
+        axis.title = element_blank(),
+        legend.position="none")
+Earth
+```
+
+
+# 4. Rashader
+```{r}
+plot_gg(Earth ,multicore=T,width=10,height=10,scale=90,
+        sunangle=90, anglebreaks = seq(0,40,0.2),
+        save_height_matrix = TRUE,windowsize = c(1000, 1000))
+
+render_snapshot(filename = "Earthquake", software_render = TRUE, width = 5060, height =5000)
+```
