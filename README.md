@@ -78,3 +78,23 @@ Today, I used a digital elevation model (DEM) to create a 2024 rendition inspire
 
 <img src="2024_Challenge/Map/Day7_VintageStyle.png" width="400"/>
 
+***
+
+### Day8: Data:HDX
+
+**Earthquake in Taiwan**
+
+This work was inspired by @researchremora. The idea for the figure came to me this afternoon while I was enjoying an ice cream, reflecting on a figure they had previously shared. I used earthquake data from 1990 to 2024, combined with land and ocean DEM, to illustrate how these mountains were uplifted by thousands times of plates collisions.
+
+
+<img src="2024_Challenge/Map/Day8_HDX_Data" width="400"/>
+
+***
+
+### Day9: AI only
+
+**AI generate a vintage map of Taiwan-Not Always Right.**
+
+A dumpster AI! I'd rather write the code myself. If any information is incorrect, that's not on me! My instruction to ChatGPT 4o is : The Taiwan map should have a very old-fashioned style, evoking a sense of heavy political pressure from 1945-1990. Then, generate and display the map here.
+
+<img src="2024_Challenge/Map/Day9_AI_Only" width="400"/>
