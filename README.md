@@ -97,4 +97,4 @@ This work was inspired by @researchremora. The idea for the figure came to me th
 
 A dumpster AI! I'd rather write the code myself. If any information is incorrect, that's not on me! My instruction to ChatGPT 4o is : The Taiwan map should have a very old-fashioned style, evoking a sense of heavy political pressure from 1945-1990. Then, generate and display the map here.
 
-<img src="2024_Challenge/Map/Day9_AI_Only,jpg" width="400"/>
+<img src="2024_Challenge/Map/Day9_AI_Only.jpg" width="400"/>
