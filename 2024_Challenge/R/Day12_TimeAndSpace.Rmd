@@ -1,0 +1,117 @@
+---
+title: "Day12_TimeAndSpace"
+author: "Chen-Chia Ku"
+date: "2024-11-12"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+
+# setwd
+```{r}
+setwd("E:/Drive/6_Rworld/30DayMapChallenge")
+```
+
+# library
+```{r}
+library(ggplot2)
+library(dplyr)
+library(biscale)
+library(ggnewscale)
+library(cowplot)
+library(rayshader)
+
+```
+
+
+# 1. Data
+```{r}
+ClimateAP <- read.csv("./2024_Challenge/Process/Day4_Hexagon/Tai_DEM2_Normal_1991_2020Y.csv")
+Land_DEM <- raster("./MapDt/combined_dem.tif")
+```
+
+# 2. Data Compiling
+```{r}
+
+# Climate data
+ClimateAP2 <- ClimateAP %>%
+  mutate(MAP=ifelse(MAP==-9999, NA, MAP), 
+         MAT=ifelse(MAT==-9999, NA, MAT)) %>%
+  filter(!(Longitude < 120 & Latitude > 24.5)) %>%
+  dplyr::select(Latitude, Longitude, MAT, MAP) %>%
+  filter(!is.na(MAP), !is.na(MAT))
+
+# Land Data
+Land_DEM2 <- aggregate(Land_DEM, fact=4)
+Global_DEM <- rasterToPoints(Land_DEM2) 
+Global_DEM2 <- as.data.frame(Global_DEM) %>%
+  rename(elevation="combined_dem") %>%
+  filter(elevation!=0)
+```
+
+# 3. Climate data bi_class
+```{r}
+data <- bi_class(ClimateAP2,
+                 x = MAT, 
+                 y = MAP, 
+                 style = "quantile", dim = 4)
+```
+
+# 4. Mapping
+```{r}
+pallet <- "BlueOr"
+mypal <- colorRampPalette(c("#363C48","#62554D","#844d2b","#b06739"))
+
+## First layer: DEM height
+TaiwamTOPO <- ggplot() +
+  geom_raster(data=Global_DEM2  , mapping=aes(x=x-0.01, y=y, fill=elevation),show.legend = FALSE)+
+  scale_fill_gradientn(colours = mypal(20))+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand=c(0,0))+
+  coord_sf(xlim = c(117, 123.5), ylim = c(20.0, 27),crs=4326)+
+  theme(panel.background = element_rect(fill ="#FBF2E0" ), 
+        panel.grid.major = element_line(color="#eec678", linewidth=0.1),
+        axis.text.x = element_text(vjust = 15, size=5, color="#0F381D"),
+        axis.text.y = element_text(angle = 270, vjust = 15, hjust=0.5, size=5, color="#0F381D"),
+        axis.ticks = element_blank(),
+        axis.title = element_blank())
+
+
+
+## Second Layer: climate color cover
+TemPre <- ggplot() +
+  geom_raster(data = data, mapping = aes(x = Longitude, y = Latitude, fill = bi_class), show.legend = FALSE) +
+  # Apply the bivariate color scale using the selected palette and dimensions
+  bi_scale_fill(pal = pallet, dim = 4, flip_axes = FALSE, rotate_pal = FALSE)+
+  coord_sf(xlim = c(117, 123.5), ylim = c(20.0, 27),crs=4326)+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand=c(0,0))+
+  theme(panel.background = element_rect(fill ="#FBF2E0" ), 
+        panel.grid.major = element_line(color="#eec678", linewidth=0.1),
+        axis.text.x = element_text(vjust = 15, size=5, color="#0F381D"),
+        axis.text.y = element_text(angle = 270, vjust = 15, hjust=0.5, size=5, color="#0F381D"),
+        axis.ticks = element_blank(),
+        axis.title = element_blank())
+
+## legend
+legend <- bi_legend(pal = pallet,   
+                    flip_axes = FALSE,
+                    rotate_pal = FALSE,
+                    dim = 4,
+                    xlab = "Temperature (&#176;C)",
+                    ylab = "Precipitation (mm)",
+                    size = 10)
+```
+
+
+
+
+# 4. Rashader
+```{r}
+plot_gg(TemPre,ggobj_height =TaiwamTOPO,
+        multicore=T,width=10,height=10,scale=160,
+        sunangle=270, anglebreaks = seq(20,40,0.1),
+        save_height_matrix = TRUE,windowsize = c(1000, 1000))
+
+render_snapshot(filename = "Tempreciture", clear=TRUE,width = 6000, height =9000)
+```
