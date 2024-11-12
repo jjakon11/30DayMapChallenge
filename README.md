@@ -98,3 +98,23 @@ This work was inspired by @researchremora. The idea for the figure came to me th
 A dumpster AI! I'd rather write the code myself. If any information is incorrect, that's not on me! My instruction to ChatGPT 4o is : The Taiwan map should have a very old-fashioned style, evoking a sense of heavy political pressure from 1945-1990. Then, generate and display the map here.
 
 <img src="2024_Challenge/Map/Day9_AI_Only.jpg" width="400"/>
+
+***
+
+### Day10: Pen & Paper
+
+**Mudouyu Lighthouse**
+
+Having not sketched in years, I simply created a basic map of Mudou Island in Penghu, Taiwan. 
+
+<img src="2024_Challenge/Map/Day10_Pen&Paper.JPEG" width="400"/>
+
+***
+
+### Day11: Arctic
+
+**Arctic**
+
+I used Arctic ocean DEM data to sneak in some marine DEM, mapping out the land areas. By stacking the same dataset three times, I was able to highlight the ocean, flatlands, and mountainous regions.
+
+<img src="2024_Challenge/Map/Day11_Arctic.png" width="400"/>
