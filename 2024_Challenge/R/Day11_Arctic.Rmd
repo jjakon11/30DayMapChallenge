@@ -1,0 +1,89 @@
+---
+title: "Day11_Arctic"
+author: "Chen-Chia Ku"
+date: "2024-11-10"
+output: html_document
+editor_options: 
+  chunk_output_type: console
+---
+# setwd
+```{r}
+setwd("D:/Drive/6_Rworld/30DayMapChallenge")
+
+```
+
+# library
+```{r}
+library(raster)
+library(ggplot2)
+library(dplyr)
+
+library(ggridges)# install.packages("ggridges")
+
+library(ggpubr)
+
+```
+
+# 1. Data
+```{r}
+Arctic <- raster("./MapDt/Arctic_v5_2024_ice_200m.tiff")
+world<- map_data("world") 
+```
+
+# 2. Data compile
+```{r}
+#Arctic Data
+Arctic_aggr <- aggregate(Arctic, fact=c(30,180) )
+Arctic_DEM1 <- rasterToPoints(Arctic_aggr) %>% 
+  as.data.frame(.) %>%
+  rename(elevation='Arctic_v5_2024_ice_200m')
+
+# 2nd layer of Arctic Data
+Arctic_aggr0 <- aggregate(Arctic, fact=20 )
+Arctic_DEM0 <- rasterToPoints(Arctic_aggr0) %>% 
+  as.data.frame(.) %>%
+  rename(elevation='Arctic_v5_2024_ice_200m')
+
+```
+
+# 3.Mapping
+```{r}
+mypal <- colorRampPalette(c("white","#19495E", "black"))
+
+ArcMap <- ggplot()+
+  geom_tile(data=Arctic_DEM0, mapping=aes(x=x, y=y, fill=elevation))+
+  scale_fill_gradientn(colours = mypal(20))+
+  geom_density_ridges(data =Arctic_DEM0, 
+                      aes(x = x, y = y, group = y, height = elevation),
+                      stat = 'identity',
+                      fill=NA,
+                      color="#5f6781",
+                      scale =0,size = 0.1, 
+                      rel_min_height =0)+
+  
+   geom_density_ridges(data =Arctic_DEM1, 
+                      aes(x = x, y = y, group = y, height = elevation),
+                      stat = 'identity',
+                      fill="#67708c",
+                      color="#1c1e26", 
+                      scale =3,size = 0.1, 
+                      rel_min_height = 0.05)+
+  scale_x_continuous(expand = c(0,0))+
+  scale_y_continuous(expand=c(0,0))+
+  coord_sf(crs=3996)+
+  theme(panel.background = element_blank(), 
+        panel.grid.major = element_line(color="#5f6781", linewidth=0.09),
+        panel.ontop = TRUE,
+        axis.text.x = element_text(vjust = 18, size=5, color="#B5C4CB"),
+        axis.text.y = element_text(angle = 270, vjust = 14, hjust=0.5, size=5, color="#B5C4CB"),
+        axis.ticks.x = element_blank(),
+        axis.title.x = element_blank(),
+        axis.ticks.y = element_blank(),
+        axis.title.y = element_blank(),
+        legend.position="none")
+ArcMap
+```
+
+```{r}
+ggexport(ArcMap, filename = "2024_Challenge/Output_Map/Arctic2.png", width = 7000, height=7000, res=1200)
+```
