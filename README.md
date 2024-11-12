@@ -118,3 +118,14 @@ Having not sketched in years, I simply created a basic map of Mudou Island in Pe
 I used Arctic ocean DEM data to sneak in some marine DEM, mapping out the land areas. By stacking the same dataset three times, I was able to highlight the ocean, flatlands, and mountainous regions.
 
 <img src="2024_Challenge/Map/Day11_Arctic.png" width="400"/>
+
+
+***
+
+### Day12: Time and Space
+
+**Taiwan's 30-Year Average Temperature and Precipitation pattern**
+
+This map, inspired by @researchremora, uses climate data from Climate AP to illustrate Taiwan's 30-year distribution of temperature and precipitation.
+
+<img src="2024_Challenge/Map/Day12_Time&Space.png" width="400"/>
